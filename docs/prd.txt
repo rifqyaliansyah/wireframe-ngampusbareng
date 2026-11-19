@@ -1,0 +1,628 @@
+PRD Try Out Ngampus Bareng — Alur, Layar, Aturan (v0.1)
+Nov 18, 2026 · @Yandi Purnawijaya
+Ringkasan dan keputusan
+Try Out NB dibangun sebagai satu mesin TO yang dibedakan lewat pengaturan akses, jadwal, dan ranking. Rilis pertama: TO retail Desember 2026, lalu paket berlangganan Januari 2027. Dokumen ini menjadi acuan web dev (wireframe/UI) dan vendor (pengembangan).
+#
+	Keputusan
+	Status
+	1
+	Satu mesin TO; jenis TO dibedakan oleh pengaturan akses, jadwal, mode, dan ranking
+	Disepakati
+	2
+	Tiga jenis TO: Reguler (katalog 20 TO, dijual lewat paket), Akbar (event, di luar 20 TO), Program/B2B (isi berbeda dari B2C)
+	Disepakati
+	3
+	Ranking hanya di TO Akbar
+	Disepakati
+	4
+	Skor IRT TO Reguler langsung keluar; TO Akbar keluar setelah periode ditutup
+	Disepakati
+	5
+	Skor yang sudah tampil tidak berubah saat bobot soal diperbarui
+	Usulan
+	6
+	Peluang lolos ditampilkan dengan kata "prediksi", dalam kategori, bukan persen
+	Disepakati (bentuk kategori: usulan)
+	7
+	Pembahasan teks + rumus + gambar; slot video disiapkan untuk nanti
+	Disepakati
+	8
+	Tipe akses "gratis" disiapkan di sistem: skor saja (+ ranking bila TO Akbar)
+	Disiapkan, belum dipakai
+	9
+	Percobaan ulang TO Reguler masuk mode latihan; yang tercatat skor pertama
+	Usulan
+	10
+	Seluruh alur didesain untuk HP; layar pengerjaan soal juga untuk laptop
+	Usulan
+	11
+	Bank soal TO B2C, drilling, dan program dipisah agar soal tidak bocor
+	Usulan
+	Acuan resmi dan benchmark kompetitor
+Aturan UTBK-SNBT 2027 belum terbit: per 15 November 2026 halaman jadwal SNPMB masih memuat 2026 (Journal Arta). Acuan sementara = pola 2026, jadi semua angka di bawah harus bisa diatur admin, tidak dikunci di kode.
+Struktur UTBK 2026 (detik)
+Kelompok
+	Subtes
+	Soal
+	Durasi (menit)
+	Tes Potensi Skolastik
+	Penalaran Umum (induktif, deduktif, kuantitatif; 3 blok @10 soal)
+	30
+	30
+	Tes Potensi Skolastik
+	Pengetahuan dan Pemahaman Umum
+	20
+	15
+	Tes Potensi Skolastik
+	Pemahaman Bacaan dan Menulis
+	20
+	25
+	Tes Potensi Skolastik
+	Pengetahuan Kuantitatif
+	20
+	20
+	Tes Literasi
+	Literasi dalam Bahasa Indonesia
+	30
+	42,5
+	Tes Literasi
+	Literasi dalam Bahasa Inggris
+	20
+	20
+	Tes Literasi
+	Penalaran Matematika
+	20
+	42,5
+	Total
+	7 subtes
+	160
+	195
+	Aturan resmi yang wajib ditiru di mode persis UTBK
+* Blocking time: setelah waktu satu subtes habis, peserta tidak bisa kembali ke subtes itu (Ruangguru).
+* Tiga tipe soal: pilihan ganda 5 opsi, pilihan majemuk kompleks (tabel), isian singkat (Bisnis.com).
+* Skor IRT: bobot soal ditentukan dari jawaban seluruh peserta setelah ujian; tidak ada skor minus (IDN Times, Ruangguru).
+* Jawaban bisa diubah, yang tersimpan pilihan terakhir (Tata tertib UTBK 2026); aplikasi berhenti otomatis saat waktu habis dan ada tutorial sebelum ujian (Tirto).
+Benchmark kompetitor
+Platform
+	Model akses
+	Fitur hasil yang menonjol
+	Ruangguru (ruanguji)
+	TO Reguler gratis; Premium = 1 kuota per TO
+	Prediksi peluang lolos prodi, statistik % benar per soal, analisis personal, live pembahasan
+	Ruangguru Mega Tryout
+	Event gratis berhadiah
+	Leaderboard nasional, IRT
+	Pahamify
+	Gratis terbatas + langganan
+	IRT, ranking nasional, Smart Analysis, rasionalisasi jurusan; TO Akbar 64.160 peserta dalam sehari (Kompas)
+	Zenius Grand Try Out
+	Event gratis
+	IRT, beasiswa untuk 50 skor terbaik
+	Analitica
+	Aplikasi
+	Skor IRT berdampingan dengan progres menuju target universitas
+	Standar minimum pasar: IRT, pembahasan, 3 tipe soal, blocking time, ranking untuk event, dan prediksi peluang lolos. Pembeda NB ada pada hasil TO yang langsung tersambung ke drilling topik lemah dan data alumni bimbel sendiri.
+Jenis TO dan pengaturannya
+Ketiga jenis TO memakai mesin yang sama; admin mengisi pengaturan di bawah ini per TO, jadi menambah TO atau program baru tidak butuh coding baru.
+Pengaturan
+	Reguler
+	Akbar
+	Program / B2B
+	Siapa boleh akses
+	Pemegang paket berlangganan (pakai kuota)
+	Siswa yang mendaftar event (gratis atau berbayar: belum diputuskan)
+	Anggota program (camp, sekolah, lembaga)
+	Jumlah
+	Katalog 20 TO
+	Per event, di luar 20 TO
+	Per program
+	Jadwal
+	Bebas selama masa aktif paket
+	Serentak dalam jendela waktu tertentu
+	Diatur per program
+	Mode
+	Siswa memilih: latihan atau persis UTBK
+	Persis UTBK saja
+	Diatur per program
+	Skor
+	IRT langsung keluar (prediksi)
+	IRT setelah periode ditutup
+	Diatur per program
+	Ranking
+	Tidak ada
+	Ada, per event
+	Tidak ada (bisa dibuka nanti)
+	Pembahasan dibuka
+	Setelah submit
+	Setelah periode ditutup
+	Diatur per program
+	Bank soal
+	Bank TO B2C
+	Bank TO B2C (paket soal khusus event)
+	Bank terpisah per program
+	Percobaan ulang
+	Boleh, masuk mode latihan
+	Tidak
+	Diatur per program
+	Alur Try Out
+Semua jenis TO melewati alur pengerjaan yang sama; perbedaannya baru muncul setelah jawaban dikirim.
+ alur Try Out siswa · Reguler dan Akbar 
+
+alur Try Out siswa · Reguler dan Akbar
+TO Reguler langsung memberi skor prediksi; TO Akbar menunggu periode ditutup lalu memberi skor final dan ranking. Kedua jalur berakhir di pembahasan, analisis topik, dan rekomendasi drilling.
+Alur admin: dari soal ke hasil
+1. Akademik mengisi template soal siap pakai (soal, opsi, kunci, pembahasan, gambar, rumus).
+2. Admin mengunggah template di AD-02; sistem memvalidasi dan menolak baris yang error.
+3. Soal valid masuk sebagai draf, dipilah per subtes dan topik, dan ditempatkan di bank TO B2C, drilling, atau program.
+4. Reviewer Akademik menyetujui soal sehingga statusnya aktif.
+5. Admin menyusun TO di AD-04: jenis, akses, jadwal, mode, struktur subtes, ranking, lalu memilih soal.
+6. Admin melihat pratinjau sebagai siswa, lalu menerbitkan TO.
+7. Setelah siswa mengerjakan, AD-05 menampilkan hasil dan statistik soal; untuk TO Akbar, admin menjalankan kalibrasi lalu merilis skor.
+Daftar layar
+22 layar dan 4 kondisi khusus; 14 layar dan 3 kondisi menjadi prioritas wireframe Jumat. Kode layar dipakai sebagai acuan bersama RnD, web dev, dan vendor.
+Kode
+	Layar
+	Sisi
+	Ringkasan
+	Wireframe Jumat
+	TO-01
+	Katalog Try Out
+	Siswa
+	Daftar TO dengan tab dan filter
+	Ya
+	TO-02
+	Detail Try Out
+	Siswa
+	Info TO, struktur subtes, status akses
+	Ya
+	TO-03
+	Akses terkunci
+	Siswa
+	Ajakan beli atau upgrade paket
+	Ya
+	TO-04
+	Pendaftaran TO Akbar
+	Siswa
+	Daftar event, pengingat jadwal
+	Nanti
+	TO-05
+	Persiapan dan pilih mode
+	Siswa
+	Tata tertib, cek perangkat, pilih mode
+	Ya
+	TO-06
+	Tutorial tipe soal
+	Siswa
+	Cara menjawab 3 tipe soal
+	Nanti
+	TO-07
+	Ruang tunggu TO Akbar
+	Siswa
+	Hitung mundur sampai ujian dibuka
+	Nanti
+	TO-08
+	Pengerjaan soal
+	Siswa
+	Soal, opsi jawaban, timer, navigasi
+	Ya (HP dan laptop)
+	TO-09
+	Panel nomor soal
+	Siswa
+	Peta nomor: terjawab, ragu, kosong
+	Ya
+	TO-10
+	Ringkasan akhir subtes
+	Siswa
+	Rekap sebelum lanjut subtes
+	Ya
+	TO-11
+	Transisi antar-subtes
+	Siswa
+	Info subtes berikutnya
+	Ya
+	TO-12
+	Konfirmasi selesai ujian
+	Siswa
+	Rekap seluruh subtes dan submit
+	Ya
+	TO-13
+	Hasil TO Reguler
+	Siswa
+	Skor prediksi IRT, prediksi lolos, jarak ke target
+	Ya
+	TO-14
+	Hasil TO Akbar
+	Siswa
+	Menunggu rilis, lalu skor final dan ranking
+	Nanti
+	TO-15
+	Ranking TO Akbar
+	Siswa
+	Top peserta dan posisi saya
+	Nanti
+	TO-16
+	Pembahasan
+	Siswa
+	Per soal: jawaban, kunci, pembahasan
+	Ya
+	TO-17
+	Analisis topik
+	Siswa
+	Kekuatan, kelemahan, rekomendasi drilling
+	Ya
+	AD-01
+	Bank soal
+	Admin
+	Daftar dan filter soal
+	Ya
+	AD-02
+	Import massal soal
+	Admin
+	Unggah template, validasi, laporan error
+	Ya
+	AD-03
+	Editor soal
+	Admin
+	Buat atau edit satu soal
+	Nanti
+	AD-04
+	Penyusun TO
+	Admin
+	Pengaturan TO dan pilih soal
+	Nanti
+	AD-05
+	Hasil dan laporan TO
+	Admin
+	Peserta, statistik soal, rilis skor Akbar
+	Nanti
+	K-01
+	Koneksi terputus
+	Kondisi
+	Banner di TO-08
+	Ya
+	K-02
+	Peringatan pindah tab
+	Kondisi
+	Pop-up di TO-08 (mode UTBK)
+	Ya
+	K-03
+	Waktu subtes habis
+	Kondisi
+	Pemberitahuan lalu ke TO-11
+	Ya
+	K-04
+	Lanjutkan ujian
+	Kondisi
+	Muncul saat masuk lagi di tengah ujian
+	Nanti
+	Catatan: "Ya" di kolom terakhir = minimal wireframe untuk presentasi vendor Jumat; "Nanti" tetap masuk scope, hanya belum digambar. Kode layar tetap sama walau desainnya berubah.
+Isi tiap layar
+Setiap layar ditulis dalam format yang sama: tujuan, isi, aksi dan ke mana klik membawa, serta kondisi khusus. Angka contoh hanya ilustrasi.
+TO-01 Katalog Try Out
+* Tujuan: siswa menemukan TO yang bisa dikerjakan.
+* Isi: tab Tersedia / Akan datang / Selesai; filter jenis (Reguler / Akbar / Program); kartu TO berisi nama, jenis, jadwal atau masa berlaku, status (belum dikerjakan, sedang berjalan, selesai, terkunci), sisa kuota paket di bagian atas.
+* Aksi: klik kartu → TO-02; banner TO Akbar → TO-04.
+* Kondisi: TO di luar hak akses tetap tampil dengan ikon gembok; tab Selesai menampilkan skor terakhir dan tombol "Lihat hasil" → TO-13/TO-14.
+TO-02 Detail Try Out
+* Tujuan: siswa paham isi TO sebelum mulai.
+* Isi: nama, jenis, struktur subtes (jumlah soal dan durasi per subtes), total waktu, mode yang tersedia, jadwal (Akbar), status kuota ("TO ini memakai 1 kuota, sisa 3").
+* Aksi: "Mulai" → TO-05 (punya akses) atau TO-03 (terkunci); "Daftar" → TO-04 (Akbar).
+* Kondisi: TO yang sudah dikerjakan menampilkan "Lihat hasil" dan "Ulangi (mode latihan)".
+TO-03 Akses terkunci
+* Tujuan: mengubah minat menjadi pembelian.
+* Isi: alasan terkunci (belum punya paket, kuota habis, masa aktif habis); perbandingan singkat paket; harga sesuai pengaturan admin.
+* Aksi: "Pilih paket" → modul Paket dan Pembayaran; "Punya kode voucher" → isi kode; "Kembali" → TO-02.
+TO-04 Pendaftaran TO Akbar
+* Isi: tanggal dan jam jendela ujian, kuota peserta, tanggal rilis skor, hadiah (jika ada), tombol daftar.
+* Aksi: "Daftar" → konfirmasi + pilihan pengingat WA/email; setelah daftar, kartu TO di TO-01 berstatus "Terdaftar".
+TO-05 Persiapan dan pilih mode
+* Tujuan: siswa siap dan memilih cara mengerjakan.
+* Isi: pilihan mode (TO Reguler): Latihan (timer bisa dijeda, bebas pindah subtes, tidak tercatat sebagai skor resmi) atau Persis UTBK (blocking time, deteksi pindah tab); tata tertib singkat; cek koneksi; saran memakai laptop untuk mode UTBK.
+* Aksi: centang "Saya sudah membaca tata tertib" → tombol "Mulai Ujian" aktif → TO-08; tautan "Lihat tutorial" → TO-06.
+* Kondisi: TO Akbar tidak menampilkan pilihan mode; bila jendela belum dibuka → TO-07.
+TO-06 Tutorial tipe soal
+* Isi: contoh pilihan ganda, pilihan majemuk kompleks, isian singkat; cara menandai ragu dan membuka panel nomor.
+* Aksi: "Saya mengerti" → kembali ke TO-05.
+TO-07 Ruang tunggu TO Akbar
+* Isi: hitung mundur, jumlah peserta terdaftar, tata tertib.
+* Aksi: tombol "Mulai" aktif otomatis saat jendela dibuka → TO-08.
+* Kondisi: saat server penuh, siswa masuk antrean dengan perkiraan waktu.
+TO-08 Pengerjaan soal
+* Tujuan: layar inti; siswa fokus mengerjakan tanpa takut jawaban hilang.
+* Isi: bagian atas: nama subtes, nomor soal ("5 dari 20"), timer subtes, indikator "Tersimpan"; bagian tengah: soal (teks, gambar, rumus, bacaan panjang dengan gulir sendiri); area jawaban sesuai tipe soal; bagian bawah: "Sebelumnya", "Tandai ragu", "Berikutnya", tombol panel nomor.
+* Aksi: pilih jawaban → tersimpan otomatis; panel nomor → TO-09; soal terakhir subtes → TO-10.
+* Kondisi: HP: bacaan panjang dan soal bisa dilipat atau digeser; laptop: bacaan di kiri, soal di kanan. Mode latihan punya tombol jeda. K-01, K-02, K-03 muncul di layar ini.
+TO-09 Panel nomor soal
+* Isi: kotak nomor dengan tiga status yang dibedakan warna dan ikon: terjawab, ragu, kosong; jumlah tiap status.
+* Aksi: klik nomor → langsung ke soal itu di TO-08.
+TO-10 Ringkasan akhir subtes
+* Isi: jumlah terjawab, ragu, kosong; sisa waktu subtes.
+* Aksi: "Periksa lagi" → TO-09; "Lanjut ke subtes berikutnya" → TO-11 (aturan pindah lebih awal: lihat Aturan R-06).
+TO-11 Transisi antar-subtes
+* Isi: subtes yang baru selesai (tidak bisa dibuka lagi di mode UTBK), nama dan durasi subtes berikutnya, hitung mundur singkat.
+* Aksi: "Mulai subtes" → TO-08.
+TO-12 Konfirmasi selesai ujian
+* Isi: rekap per subtes (terjawab, ragu, kosong); peringatan bahwa ujian tidak bisa diubah setelah dikirim.
+* Aksi: "Kirim jawaban" → TO-13 (Reguler) atau TO-14 (Akbar).
+* Kondisi: di subtes terakhir saat waktu habis, sistem mengirim otomatis tanpa layar ini.
+TO-13 Hasil TO Reguler
+* Tujuan: siswa tahu posisinya dan langkah berikutnya.
+* Isi: skor prediksi IRT total dan per 7 subtes; jumlah benar per subtes; prediksi lolos per prodi target dalam kategori (mis. Aman / Berpeluang / Perlu kerja keras) dengan disclaimer; jarak ke target ("70 poin lagi"); perbandingan dengan TO sebelumnya.
+* Aksi: "Lihat pembahasan" → TO-16; "Analisis topik" → TO-17; "Ubah prodi target" → profil.
+* Kondisi: hasil mode latihan diberi label "Latihan" dan tidak masuk riwayat skor resmi.
+TO-14 Hasil TO Akbar
+* Isi: sebelum rilis: "Skor keluar [tanggal, jam]" + jumlah peserta; sesudah rilis: isi seperti TO-13 + peringkat.
+* Aksi: "Lihat ranking" → TO-15; pembahasan → TO-16 (terbuka setelah rilis).
+TO-15 Ranking TO Akbar
+* Isi: top peserta (jumlah: belum diputuskan), posisi saya dan beberapa peringkat di sekitar saya, total peserta; nama panggilan, opsi anonim.
+* Aksi: filter cakupan (nasional; provinsi atau sekolah: belum diputuskan).
+TO-16 Pembahasan
+* Isi: per soal: soal, jawaban saya, kunci, status (benar, salah, kosong), pembahasan teks dengan rumus dan gambar; slot video disiapkan.
+* Aksi: pilih subtes; filter Salah / Ragu / Kosong / Semua; "Sebelumnya" dan "Berikutnya"; "Laporkan soal" → formulir ke Akademik.
+TO-17 Analisis topik
+* Isi: persentase benar per topik per subtes; 3 topik terlemah; rekomendasi latihan.
+* Aksi: "Latih topik ini" → drilling (punya akses) atau TO-03 (belum punya akses).
+AD-01 Bank soal
+* Isi: tabel soal dengan filter: bank (TO B2C, drilling, program), subtes, topik, tipe soal, tingkat kesulitan, status (draf, direview, aktif, diarsipkan), dipakai di TO mana; pencarian teks.
+* Aksi: "Import massal" → AD-02; "Tambah soal" → AD-03; klik soal → AD-03.
+AD-02 Import massal soal
+* Isi: unduh template; unggah file template + folder gambar; hasil validasi (jumlah valid, jumlah error, daftar baris error dengan alasan); pratinjau beberapa soal seperti tampilan siswa.
+* Aksi: "Simpan yang valid sebagai draf"; "Unduh laporan error" untuk diperbaiki dan diunggah ulang.
+AD-03 Editor soal
+* Isi: pilihan tipe soal; teks soal dengan rumus dan gambar; opsi dan kunci (atau aturan jawaban isian); pembahasan; subtes, topik, subtopik, tingkat kesulitan awal; bank tujuan; status review; riwayat perubahan.
+* Aksi: simpan draf; kirim untuk review; setujui (peran reviewer Akademik); arsipkan.
+AD-04 Penyusun TO
+* Isi: jenis TO; siapa boleh akses; jadwal atau masa berlaku; mode; struktur subtes, durasi, urutan; ranking aktif atau tidak; kapan pembahasan dibuka; pilih soal per subtes (manual atau acak dari bank sesuai kriteria).
+* Aksi: "Pratinjau sebagai siswa"; "Terbitkan" (soal terkunci setelah TO dikerjakan siswa pertama).
+AD-05 Hasil dan laporan TO
+* Isi: jumlah peserta, sebaran skor, statistik per soal (% benar, soal yang paling banyak dikosongkan), catatan integritas (pindah tab), laporan soal dari siswa; untuk TO Akbar: tombol jalankan kalibrasi dan rilis skor.
+* Aksi: ekspor CSV; "Rilis skor" (Akbar); tandai soal bermasalah.
+Kondisi khusus
+* K-01 Koneksi terputus: banner "Koneksi terputus. Jawabanmu aman, sedang menyambung ulang"; jawaban baru ditahan di perangkat dan dikirim saat tersambung.
+* K-02 Peringatan pindah tab: pop-up "Kamu keluar dari halaman ujian (1 dari [N]). Kejadian ini dicatat."
+* K-03 Waktu subtes habis: pemberitahuan "Waktu subtes [nama] habis, jawabanmu sudah tersimpan" → TO-11.
+* K-04 Lanjutkan ujian: saat siswa masuk lagi di tengah ujian: "Lanjutkan [nama TO]? Sisa waktu subtes [mm:ss]" → TO-08 di soal terakhir.
+Dashboard siswa (DB-01)
+Dashboard adalah halaman pertama setelah login dan masuk prioritas wireframe Jumat. Bentuknya kartu modular (konsep B, Bento): modul dinyalakan bertahap sesuai data yang sudah ada, jadi rilis Desember tetap berguna walau datanya baru dari Try Out.
+#
+	Modul
+	Isi
+	Klik ke
+	Rilis
+	1
+	Sapaan dan target
+	Nama, kampus dan prodi target, label program/batch bila peserta program
+	Profil (ubah target)
+	Desember
+	2
+	Posisi saat ini
+	Skor TO resmi terakhir, jarak ke target ("70 poin lagi"), prediksi lolos dalam kategori
+	TO-13 / TO-14
+	Desember
+	3
+	Tren skor
+	Skor total per TO resmi; mode latihan tidak dihitung
+	TO-01 tab Selesai
+	Desember
+	4
+	TO berikutnya
+	Lanjutkan TO yang terputus, hitung mundur TO Akbar yang diikuti, atau TO yang disarankan berikutnya
+	K-04 / TO-07 / TO-02
+	Desember
+	5
+	Paket dan kuota
+	Nama paket, sisa kuota, masa aktif, tombol upgrade
+	TO-03 / Paket
+	Desember
+	6
+	Topik terlemah
+	3 topik terlemah dari TO terakhir
+	TO-17
+	Desember
+	7
+	Misi harian
+	Drilling, video, dan modul yang disarankan hari ini
+	Modul belajar
+	Januari
+	8
+	Streak dan XP
+	Hari beruntun belajar, XP minggu ini
+	Learning Tracker
+	Januari
+	9
+	Progres materi
+	Video ditonton, bab modul, soal drilling
+	Learning Tracker
+	Januari
+	10
+	Liga, badge, peta journey
+	Leaderboard usaha, pencapaian, halaman peta
+	Halaman masing-masing
+	Nanti
+	Urutan di HP: 4 (bila ada TO terputus) → 2 → 6 → 5 → 3; bila tidak ada TO terputus, modul 4 turun setelah modul 2. Di laptop, modul tampil sebagai grid dua kolom.
+Kondisi khusus
+* Siswa baru (belum pernah TO resmi): modul 2, 3, dan 6 diganti satu kartu ajakan "Kerjakan TO pertamamu untuk tahu posisimu" → TO-02; modul 1 dan 5 tetap tampil.
+* Paket habis: banner di atas modul 1 dengan ajakan perpanjang → TO-03.
+* Peserta program: TO dan drilling khusus program tampil di modul 4 dan 7 dengan label programnya.
+Aturan dashboard
+* R-36 Dashboard hanya memakai skor TO resmi (mode persis UTBK dan TO Akbar); hasil mode latihan tidak memengaruhi modul 2, 3, dan 6.
+* R-37 Modul yang datanya belum ada disembunyikan atau diganti ajakan, tidak ditampilkan sebagai kartu kosong.
+* R-38 Modul 7–10 sudah disiapkan tempatnya di tata letak, tetapi baru dinyalakan sesuai jadwal rilis tanpa desain ulang.
+Aturan
+35 aturan bernomor menjadi dasar acceptance criteria vendor; yang bertanda [keputusan] belum dikunci dan ada di Pertanyaan terbuka.
+A. Akses dan kuota
+* R-01 Satu TO Reguler memakai 1 kuota saat siswa menekan "Mulai Ujian", bukan saat membuka detail.
+* R-02 Jumlah kuota dan masa aktif mengikuti paket yang diatur admin (rencana saat ini: 1 bulan 1 TO, 3 bulan 5 TO, 6 bulan 10 TO, 12 bulan 20 TO).
+* R-03 TO yang sudah dimulai tetap bisa diselesaikan walau masa aktif paket habis di tengah ujian.
+* R-04 Siswa melihat seluruh katalog 20 TO Reguler; yang di luar haknya tampil terkunci dengan ajakan beli atau upgrade.
+* R-05 Percobaan ulang TO Reguler masuk mode latihan dan [keputusan] tidak memakai kuota.
+B. Pelaksanaan dan mode
+* R-06 Mode persis UTBK memakai blocking time: subtes berpindah otomatis saat waktu habis dan tidak bisa dibuka kembali. Boleh pindah lebih awal sebelum waktu habis: [keputusan].
+* R-07 Di dalam satu subtes, siswa bebas pindah nomor, mengubah jawaban, dan menandai ragu.
+* R-08 Mode latihan: timer bisa dijeda, bebas pindah subtes, tidak tercatat sebagai skor resmi.
+* R-09 Timer dihitung server: waktu tetap berjalan saat koneksi putus atau halaman ditutup (mode UTBK dan TO Akbar).
+* R-10 Setiap perubahan jawaban tersimpan otomatis ke server; indikator "Tersimpan" selalu terlihat.
+* R-11 Tiga tipe soal didukung: pilihan ganda 5 opsi, pilihan majemuk kompleks (tabel), isian singkat. Aturan pencocokan isian (format angka, huruf besar-kecil, beberapa jawaban benar) diatur per soal.
+* R-12 Struktur subtes, jumlah soal, durasi, dan urutan diatur admin per TO; bawaan mengikuti pola UTBK 2026.
+C. Skor dan IRT
+* R-13 TO Reguler: skor prediksi IRT keluar langsung setelah submit, memakai bobot soal yang sudah dikalibrasi dari data sebelumnya.
+* R-14 TO Akbar: skor keluar setelah periode ditutup dan kalibrasi dari jawaban seluruh peserta event selesai; tanggal rilis tampil di layar.
+* R-15 Bobot soal TO Reguler diperbarui berkala saat data cukup; skor yang sudah tampil tidak berubah (usulan).
+* R-16 Soal baru tanpa data memakai bobot awal dari tingkat kesulitan yang ditetapkan Akademik.
+* R-17 Tidak ada skor minus; soal kosong bernilai 0.
+* R-18 Skor tampil per subtes dan total. Model, skala, dan cara konversi IRT ditetapkan RnD + Akademik bersama vendor [keputusan].
+D. Hasil, pembahasan, analisis
+* R-19 Pembahasan TO Reguler terbuka setelah submit; TO Akbar setelah periode ditutup.
+* R-20 Pembahasan per soal berisi jawaban siswa, kunci, dan pembahasan teks dengan rumus dan gambar; slot video disiapkan.
+* R-21 Analisis topik menampilkan persentase benar per topik dan 3 topik terlemah, terhubung ke drilling topik tersebut.
+* R-22 Siswa tanpa akses drilling melihat rekomendasi topik, tetapi tombol latihan mengarah ke ajakan upgrade.
+* R-23 TO gratis (bila nanti dipakai) hanya menampilkan skor (+ ranking bila TO Akbar); pembahasan dan analisis terkunci.
+E. Ranking
+* R-24 Ranking hanya ada di TO Akbar, dihitung dari skor final percobaan pertama dalam periode event.
+* R-25 Ranking menampilkan top peserta [keputusan: jumlah] dan posisi siswa; memakai nama panggilan dengan opsi anonim karena mayoritas peserta di bawah 18 tahun.
+* R-26 Cakupan ranking: nasional; filter provinsi atau sekolah [keputusan].
+F. Prediksi lolos
+* R-27 Selalu disebut "prediksi", ditampilkan dalam kategori (mis. Aman / Berpeluang / Perlu kerja keras), bukan persen; disclaimer wajib tampil.
+* R-28 Dasar perhitungan: skor siswa dibandingkan data skor target prodi dari data alumni NB dan data daya tampung serta peminat SNPMB; data dikelola Akademik [keputusan: sumber final].
+* R-29 Siswa memilih prodi target di profil [keputusan: jumlah pilihan].
+G. Integritas ujian
+* R-30 Mode UTBK dan TO Akbar mencatat setiap kali siswa keluar halaman atau layar penuh, memberi peringatan, dan [keputusan] submit otomatis setelah N kali; dicatat di laporan, bukan diskualifikasi otomatis.
+* R-31 Salin teks dan klik kanan diblokir di halaman ujian; urutan soal dan opsi diacak per siswa [keputusan].
+* R-32 Satu sesi ujian aktif per akun; batas perangkat per akun [keputusan].
+H. Bank soal dan import massal
+* R-33 Import massal memakai template (asumsi: Excel + folder gambar) yang memuat per baris: tipe soal, teks, opsi, kunci atau aturan isian, pembahasan, subtes, topik, subtopik, tingkat kesulitan, bank tujuan (TO B2C, drilling, program), sumber.
+* R-34 Sistem memvalidasi sebelum menyimpan: baris error ditolak beserta alasannya, baris valid masuk sebagai draf.
+* R-35 Alur status soal: draf → direview Akademik → aktif → diarsipkan. Soal yang sudah dipakai di TO tidak bisa dihapus, hanya diarsipkan; satu soal hanya berada di satu bank.
+Kasus bermasalah
+Prinsipnya: jawaban siswa tidak boleh hilang dan aturan waktu tetap adil. 14 kasus di bawah wajib diuji vendor sebelum UAT.
+#
+	Kasus
+	Perilaku sistem
+	Yang dilihat siswa
+	1
+	Koneksi putus saat ujian
+	Jawaban terakhir aman di server; jawaban baru ditahan di perangkat; timer tetap berjalan di server
+	Banner K-01; saat tersambung lagi, lanjut di soal yang sama
+	2
+	HP mati atau browser tertutup
+	Sesi dilanjutkan bila waktu subtes masih ada; subtes yang waktunya habis ditutup
+	Layar K-04 dengan sisa waktu
+	3
+	Waktu subtes habis
+	Jawaban disimpan, pindah otomatis ke subtes berikutnya
+	K-03 lalu TO-11
+	4
+	Waktu subtes terakhir habis tanpa submit
+	Ujian dikirim otomatis
+	Langsung ke TO-13 atau TO-14
+	5
+	Pindah tab di mode UTBK
+	Dicatat dengan jam kejadian; peringatan; [keputusan] batas N kali
+	Pop-up K-02
+	6
+	Kuota habis
+	TO terkunci
+	TO-03 dengan ajakan perpanjang atau upgrade
+	7
+	Masa aktif paket habis saat ujian berjalan
+	Ujian tetap bisa diselesaikan (R-03)
+	Tidak ada gangguan
+	8
+	Pembayaran gagal atau tertunda
+	Kuota belum aktif sampai pembayaran terkonfirmasi
+	Status "Menunggu pembayaran" di TO-03
+	9
+	Login dari perangkat kedua saat ujian
+	Hanya satu sesi aktif; [keputusan] sesi lama dihentikan atau login baru ditolak
+	Pesan penjelasan di perangkat yang terdampak
+	10
+	Server penuh saat TO Akbar dibuka
+	Siswa masuk antrean; jendela waktu tidak terpotong oleh antrean [keputusan]
+	Ruang tunggu TO-07 dengan antrean
+	11
+	Kunci jawaban salah ditemukan setelah TO
+	Admin menandai soal; skor dihitung ulang tanpa soal itu [keputusan kebijakan]
+	Pemberitahuan koreksi di TO-13
+	12
+	Jawaban isian beda format (2,5 vs 2.5)
+	Dicocokkan dengan aturan per soal (R-11)
+	Dinilai benar bila sesuai aturan
+	13
+	Terlambat masuk TO Akbar
+	Boleh masuk selama jendela dibuka; waktu tidak ditambah [keputusan]
+	Info sisa waktu sebelum mulai
+	14
+	Import soal dengan baris rusak (kunci kosong, gambar hilang)
+	Baris ditolak dengan alasan; baris lain tetap masuk sebagai draf (R-34)
+	Admin melihat laporan error di AD-02
+	Pertanyaan terbuka
+12 keputusan masih terbuka; tiga yang paling memengaruhi estimasi vendor ada di baris teratas.
+#
+	Pertanyaan
+	Pemilik
+	Terkait
+	1
+	Model dan skala IRT, serta siapa reviewer psikometrinya
+	RnD + Akademik + vendor
+	R-18
+	2
+	Apakah NB memegang data TO tahun lalu (jawaban per soal) untuk kalibrasi awal, termasuk dari vendor sebelumnya
+	Direktur
+	R-13, R-16
+	3
+	Format soal Akademik saat ini (Word atau Excel) untuk menentukan template import
+	Akademik
+	R-33
+	4
+	TO Akbar gratis atau berbayar
+	Direktur
+	R-23
+	5
+	Boleh pindah subtes lebih awal di mode UTBK
+	RnD
+	R-06
+	6
+	Batas pindah tab sebelum submit otomatis
+	RnD
+	R-30
+	7
+	Jumlah top ranking dan filter provinsi atau sekolah
+	RnD
+	R-25, R-26
+	8
+	Jumlah prodi target per siswa dan sumber final data skor target
+	Akademik
+	R-28, R-29
+	9
+	Kebijakan koreksi soal bermasalah setelah TO
+	Akademik
+	Kasus 11
+	10
+	Batas perangkat per akun dan perilaku login ganda
+	RnD
+	R-32, kasus 9
+	11
+	Percobaan ulang memakai kuota atau tidak
+	Direktur
+	R-05
+	12
+	Proporsi siswa memakai HP dan laptop pada TO tahun lalu
+	RnD
+	Keputusan 10
+	Sumber
+Diakses 18 November 2026. Aturan resmi 2027 belum terbit; cek ulang saat SNPMB merilis ketentuan baru.
+* Panduan SNBP dan SNBT 2027 — Journal Arta
+* Durasi pengerjaan UTBK 2026 per subtes — detik
+* Paparan informasi SNBT 2026 — UIN Jakarta
+* Strategi blocking time UTBK — Ruangguru
+* Poin penting UTBK SNBT 2026 — Bisnis.com
+* Sistem penilaian IRT — Ruangguru
+* Penjelasan SNPMB tentang bobot soal — IDN Times
+* Tata tertib UTBK 2026 — ISI
+* Waktu dan aturan UTBK SNBT 2026 — Tirto
+* Ruanguji — Ruangguru
+* Mega Tryout SNBT — Ruangguru
+* Pahamify — Toolmage
+* Rekor TO Akbar Pahamify — Kompas
+* Zenius Grand Try Out — Gizmologi
+* Analitica — MWM

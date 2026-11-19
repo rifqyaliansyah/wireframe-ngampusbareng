@@ -1,0 +1,75 @@
+/* Sitemap, flows, public website, auth */
+const FLOWS={
+ f1:{n:1,t:'Pengunjung → Registrasi → Profil → Dashboard',steps:['PB-01','AU-02','AU-03?step=Data diri','AU-03?step=Sekolah','AU-04','DB-01?state=Siswa baru']},
+ f2:{n:2,t:'Dashboard → Katalog → Detail → Persiapan → Ujian → Hasil',steps:['DB-01?state=Sudah punya hasil','TO-01?tab=Tersedia','TO-02?akses=Punya akses','TO-05?jenis=Reguler','TO-08?tipe=Pilihan ganda','TO-09','TO-10','TO-11','TO-12','TO-13']},
+ f3:{n:3,t:'Hasil → Pembahasan → Analisis → Drilling',steps:['TO-13','TO-16','TO-17?akses=Punya akses drilling','BL-02?view=Pengerjaan']},
+ f4:{n:4,t:'Try Out terkunci → Paket → Checkout → Akses aktif',steps:['TO-02?akses=Terkunci','TO-03?alasan=Belum punya paket','PK-02','PK-03','PK-04?status=Menunggu pembayaran','PK-04?status=Berhasil','PK-01']},
+ f5:{n:5,t:'Admin → Bank Soal → Import → Validasi → Draf',steps:['AM-01','AD-01','AD-02?tahap=1 Unggah','AD-02?tahap=2 Hasil validasi','AD-02?tahap=3 Tersimpan']},
+ f6:{n:6,t:'Admin → Penyusun TO → Preview → Terbitkan',steps:['AD-04?tahap=Pengaturan','AD-04?tahap=Pilih soal','AD-04?tahap=Pratinjau','AD-04?tahap=Terbit']},
+ f7:{n:7,t:'Peserta program → Dashboard program → Try Out program',steps:['DB-01?state=Peserta program','PG-S1','TO-01?filter=Program','TO-02?jenis=Program','TO-05?jenis=Program']},
+ f8:{n:8,t:'Siswa → Journey → Progres belajar → Rekomendasi belajar',steps:['DB-01?state=Sudah punya hasil','JR-01','JR-02','BL-01']},
+};
+const LEG=`<div class="row sm">${tag('Ya','k')} Prioritas wireframe PRD (detail penuh) ${tag('Nanti','d')} Masuk scope, struktur utama ${tag('Des 2026','g')} ${tag('Jan 2027','g')} ${tag('Berikutnya','g')} ${tag('Menengah','g')} ${tag('Jangka panjang','g')} Target rilis dari Konsep Platform ${tbd()} Keputusan belum dikunci</div>`;
+
+def({id:'SM-00',group:'map',name:'Sitemap, legenda & alur utama',only:'desk',render(){
+ const cols=GROUPS.filter(g=>g[0]!='map').map(([g,gl])=>{const ids=ORDER.filter(id=>S[id].group==g);return `<div class="box"><div class="kick" style="margin-bottom:8px">${gl}</div>${ids.map(id=>`<div class="row nw" style="padding:3px 0;cursor:pointer"${go(id)}><code class="mono sm" style="min-width:52px">${id}</code><span style="flex:1;font-size:12px">${S[id].name}</span>${S[id].st?tag(S[id].st,S[id].st=='Ya'?'k':'d'):''}</div>`).join('')}</div>`}).join('');
+ return `<div class="pg"><div class="row nw" style="align-items:flex-end"><div><div class="kick">Ngampus Bareng · Low-fidelity wireframe · v0.1 · November 2026</div><div class="h0" style="margin-top:6px">Peta platform</div>
+ <div class="muted" style="max-width:640px;margin-top:6px">Satu platform, empat lapisan: sisi siswa, sisi admin, sisi pengajar, fondasi. Fitur dibangun sekali; paket dan program yang menentukan siapa boleh memakai apa. Sumber: <i>Konsep Platform</i> & <i>PRD Try Out v0.1</i>.</div></div></div>
+ ${LEG}
+ <div class="box dk"><div class="ch"><b>Alur utama yang bisa diklik (prototype)</b><span class="sm">Klik "Mainkan" — bar hitam di atas memandu langkah; semua tombol di dalam frame juga bisa diklik.</span></div>
+ <div class="g2">${Object.entries(FLOWS).map(([k,f])=>`<div class="row nw" style="border:1px solid var(--g4);border-radius:6px;padding:8px 10px"><b class="mono">${f.n}</b><span style="flex:1;font-size:12px">${f.t}</span><button class="btn sm p" data-flow="${k}">Mainkan ▸</button></div>`).join('')}</div></div>
+ <div class="g4">
+  ${box('Sisi siswa','<div class="sm">Akun & kampus impian · Try Out & hasil · Paket saya & referral · Dashboard journey · Video, modul, drilling</div>')}
+  ${box('Sisi admin','<div class="sm">Bank soal TO & drilling · Penyusun TO · Paket, harga, bundling · Voucher, referral, laporan</div>')}
+  ${box('Sisi pengajar '+tag('Nanti','d'),'<div class="sm">Tutor: kelas & rekaman · Mentor: pantau progres · Admin program: peserta & laporan</div>')}
+  ${box('Fondasi','<div class="sm">Hak akses per paket & program · Pembayaran online · Notifikasi WA & email · Analitik perilaku · Keamanan data siswa</div>')}
+ </div>
+ <div style="columns:3;column-gap:14px" class="sitecols">${cols.replace(/<div class="box">/g,'<div class="box" style="break-inside:avoid;margin-bottom:14px">')}</div>
+ <div class="box fill"><div class="ch"><b>Cara pakai</b></div><div class="sm">Indeks kiri = semua layar dengan kode. Kode PRD (TO-, AD-, K-, DB-01) dipakai persis. Kode lain (PB-, AU-, PK-, BL-, JR-, BT-, AK-, AM-, PG-, TU-, FD-) adalah kode wireframe untuk lapisan di luar PRD. Bar abu di atas frame = pilihan kondisi/state layar. Tombol "Tandai area klik" menyorot semua elemen yang terhubung. ↑/↓ pindah layar.</div></div>
+ </div>`;}});
+
+/* ---------- A. PUBLIC ---------- */
+def({id:'PB-01',group:'pub',name:'Landing page',rel:'Des 2026',notes:['Section: navbar, hero, penjelasan NB, Try Out, Latihan, Journey, Paket, keunggulan, FAQ, footer.','Harga tidak ditulis — mengikuti pengaturan admin.'],render(){
+ const feat=(k,t,d,id,st)=>`<div class="box"${go(id)}>${ph(k,90)}<div class="h3 mt">${t} ${st||''}</div><div class="sm">${d}</div></div>`;
+ return `${pubNav()}
+ <div class="sec"><div class="g2" style="align-items:center"><div class="col"><span class="kick">Platform persiapan UTBK</span><div class="h0">Menuju kampus impian, tahu posisimu hari ini.</div>
+ <div class="muted">Siswa tahu posisinya, tahu jaraknya ke kampus impian, dan tahu apa yang harus dilatih hari ini.</div><div class="row">${btn('Daftar gratis','AU-02','p lg')}${btn('Lihat paket','PB-02','lg')}</div></div>${ph('Visual hero',300)}</div></div>
+ <div class="sec"><div class="kick">Apa itu Ngampus Bareng</div><div class="g3 mt"><div class="h2 s2">Satu tempat untuk mengukur posisi, menutup jarak ke target prodi, dan belajar setiap hari.</div><div>${lines(4)}</div></div></div>
+ <div class="sec"><div class="g4">${feat('Try Out','Try Out','Simulasi persis UTBK untuk mengukur posisi.','PB-02')}${feat('Latihan','Latihan','Drilling per topik; nanti video & modul.','PB-04',tag('Jan','g'))}${feat('Journey','Journey','Dashboard progres, XP, streak, leaderboard.','PB-04',tag('Jan','g'))}${feat('Paket','Paket','TO satuan & berlangganan, dengan bundling.','PB-02')}</div></div>
+ <div class="sec"><div class="kick">Cara kerja</div><div class="g5 mt">${['Pilih kampus impian','Pilih mode, ikut TO','Lihat hasil','Jarak ke tujuan','Belajar & TO lagi'].map((s,i)=>`<div class="box"><b class="mono">${i+1}</b><div class="h3">${s}</div>${lines(2)}</div>`).join('')}</div></div>
+ <div class="sec"><div class="row"><div class="h2">Paket</div><span class="sp"></span>${btn('Bandingkan semua paket','PB-02','sm')}</div><div class="g3 mt">${['TO satuan','Berlangganan','Bundling'].map(p=>`<div class="box"><div class="h3">${p}</div>${lines(3)}<div class="row mt"><span class="sm">Harga: diatur admin</span><span class="sp"></span>${btn('Pilih','AU-02','sm p')}</div></div>`).join('')}</div></div>
+ <div class="sec"><div class="kick">Keunggulan</div><div class="g3 mt">${['Hasil TO langsung tersambung ke drilling topik lemah','Prediksi peluang lolos dari data alumni bimbel NB','Dua mode: latihan santai & persis UTBK'].map(t=>`<div class="box fill"><div class="h3">${t}</div>${lines(2)}</div>`).join('')}</div></div>
+ <div class="sec"><div class="row"><div class="h2">FAQ</div><span class="sp"></span>${btn('Semua FAQ','PB-03','sm g')}</div><div class="col mt">${[1,2,3].map(()=>`<div class="box row nw"><span style="flex:1">${lines(1,60,1)}</span>+</div>`).join('')}</div></div>
+ ${pubFoot()}`;}});
+
+def({id:'PB-02',group:'pub',name:'Halaman paket (publik)',rel:'Des 2026 / Jan 2027',notes:['Desember: TO satuan + voucher. Januari: berlangganan, bundling, perpanjang/upgrade.','Rencana kuota (R-02): 1 bln 1 TO · 3 bln 5 TO · 6 bln 10 TO · 12 bln 20 TO — semua diatur admin. Harga tidak dikarang.'],render(){
+ const pk=[['1 bulan','1 TO'],['3 bulan','5 TO'],['6 bulan','10 TO'],['12 bulan','20 TO']];
+ return `${pubNav()}<div class="pg"><div class="center col" style="align-items:center"><div class="kick">Paket</div><div class="h1">Pilih cara belajarmu</div>${seg('jenis',['Berlangganan','TO satuan','Bundling'],v('jenis'))}</div>
+ ${v('jenis')=='Berlangganan'?`<div class="g4">${pk.map(([m,q],i)=>`<div class="box ${i==2?'dk':''}"><div class="kick">${m}</div><div class="h2">${q} Reguler</div><div class="sm">Harga diatur admin</div><hr style="margin:10px 0">${lines(3)}${btn('Pilih paket','AU-02','blk sm '+(i==2?'p':''))}</div>`).join('')}</div>`:
+ v('jenis')=='TO satuan'?`<div class="g3">${[1,2,3].map(i=>`<div class="box"><div class="h3">Try Out Reguler #${i}</div><div class="sm">7 subtes · 160 soal · 195 menit</div><div class="row mt"><span class="sm">Harga: diatur admin</span><span class="sp"></span>${btn('Beli','AU-02','sm p')}</div></div>`).join('')}</div>`:
+ `<div class="g2">${['Bundling A','Bundling B'].map(b=>`<div class="box"><div class="h3">${b}</div><div class="sm">Isi bundling dikonfigurasi admin (mis. TO + drilling + video)</div>${lines(3)}${btn('Pilih','AU-02','sm p')}</div>`).join('')}</div>`}
+ <div class="box"><div class="ch"><b>Bandingkan isi paket</b></div>${table(['Isi','1 bln','3 bln','6 bln','12 bln'],[['Kuota TO Reguler','1','5','10','20'],['Masa aktif','1 bln','3 bln','6 bln','12 bln'],['Pembahasan & analisis','✓','✓','✓','✓'],['Drilling',tbd('Aturan difinalkan'),tbd('—'),tbd('—'),tbd('—')],['Video & modul '+tag('Jan','g'),tbd('Diatur admin'),'','','']])}</div>
+ <div class="row sm">Punya voucher atau kode referral? Masukkan saat checkout.</div></div>${pubFoot()}`;},variants:{jenis:{label:'Jenis',opts:['Berlangganan','TO satuan','Bundling']}}});
+
+def({id:'PB-03',group:'pub',name:'FAQ',rel:'Des 2026',render(){return `${pubNav()}<div class="pg" style="max-width:820px;margin:0 auto;width:100%"><div class="h1">Pertanyaan umum</div><div class="inp">⌕ Cari pertanyaan</div>
+ <div class="row">${['Semua','Try Out','Paket & pembayaran','Akun','Skor & IRT'].map((c,i)=>`<span class="chip ${i==0?'tag k':''}">${c}</span>`).join('')}</div>
+ ${['Apa beda mode Latihan dan Persis UTBK?','Bagaimana skor IRT dihitung?','Apakah satu akun bisa punya beberapa paket?','Kapan kuota TO terpakai?','Bagaimana jika koneksi terputus saat ujian?'].map((q,i)=>`<div class="box"><div class="row nw"><b style="flex:1">${q}</b>${i==3?'−':'+'}</div>${i==3?`<div class="mt">${lines(2)} ${rule('R-01')} Kuota terpakai saat menekan "Mulai Ujian", bukan saat membuka detail.</div>`:''}</div>`).join('')}
+ <div class="box fill row"><span style="flex:1">Belum terjawab?</span>${btn('Hubungi CS','BT-01','sm')}</div></div>${pubFoot()}`;}});
+
+def({id:'PB-04',group:'pub',name:'Tentang / informasi platform',rel:'Des 2026',render(){return `${pubNav()}<div class="sec"><div class="g2"><div class="col"><div class="kick">Tentang</div><div class="h1">Ngampus Bareng</div>${lines(5)}</div>${ph('Foto / video tim',220)}</div></div>
+ <div class="sec"><div class="h2">Satu platform, banyak program</div><div class="g3 mt">${['Siswa retail','Program bimbel NB','Program lembaga / sekolah'].map(t=>box(t,lines(3))).join('')}</div></div>
+ <div class="sec"><div class="h2">Latihan, Journey, dan fitur belajar</div><div class="g4 mt">${['Drilling per topik','Video learning','Modul digital','Journey, XP & streak'].map(t=>`<div class="box">${ph('ikon',50)}<div class="h3 mt">${t}</div>${tag('Jan 2027','g')}</div>`).join('')}</div></div>${pubFoot()}`;}});
+
+def({id:'PB-05',group:'pub',name:'Blog & konten SEO',st:'Nanti',rel:'Nanti',render(){return `${pubNav()}<div class="pg">${nanti('NANTI · Blog & konten SEO (Konsep: daftar keinginan)')}<div class="h1">Blog</div><div class="g3">${[1,2,3,4,5,6].map(()=>`<div class="box">${ph('thumbnail',110)}${lines(2,90,1)}</div>`).join('')}</div></div>${pubFoot()}`;}});
+
+/* ---------- B. AUTH ---------- */
+const authWrap=(body,side=true)=>`<div class="pnav"><div class="logo"${go('PB-01')}>NB</div><b>Ngampus Bareng</b></div><div class="${side?'g2':''}" style="min-height:680px">${side?`<div class="hide-m" style="background:var(--g5);padding:40px;border-right:1px solid var(--g3)">${ph('Visual / pesan singkat',360)}</div>`:''}<div style="padding:36px;display:flex;justify-content:center"><div class="col" style="width:100%;max-width:400px">${body}</div></div></div>`;
+def({id:'AU-01',group:'auth',name:'Masuk (email / Google)',rel:'Des 2026',render(){return authWrap(`<div class="h1">Masuk</div>${btn('G · Masuk dengan Google','DB-01','blk')}<div class="row sm"><hr style="flex:1">atau<hr style="flex:1"></div>${fld('Email','nama@email.com')}${fld('Kata sandi','••••••••')}<div class="row sm"><span class="sp"></span><u>Lupa kata sandi?</u></div>${btn('Masuk','DB-01','p blk')}<div class="sm center">Belum punya akun? <u${go('AU-02')}>Daftar</u></div>`);}});
+def({id:'AU-02',group:'auth',name:'Registrasi',rel:'Des 2026',render(){return authWrap(`<div class="h1">Buat akun</div>${btn('G · Daftar dengan Google','AU-03','blk')}<div class="row sm"><hr style="flex:1">atau<hr style="flex:1"></div>${fld('Nama lengkap')}${fld('Email')}${fld('Nomor WhatsApp','untuk pengingat & notifikasi')}${fld('Kata sandi')}${fld('Kode referral (opsional)')}${chk('Saya setuju syarat & kebijakan privasi',1)}${btn('Daftar','AU-03','p blk')}<div class="sm center">Sudah punya akun? <u${go('AU-01')}>Masuk</u></div>`);}});
+def({id:'AU-03',group:'auth',name:'Lengkapi profil & sekolah',rel:'Des 2026',variants:{step:{label:'Langkah',opts:['Data diri','Sekolah']}},render(){const s=v('step');return authWrap(`${steps(['Data diri','Sekolah','Target'],s=='Data diri'?0:1)}
+ ${s=='Data diri'?`<div class="h1">Kenalan dulu</div>${fld('Nama panggilan','dipakai di ranking TO Akbar')}${fld('Tanggal lahir')}${fld('Jenis kelamin','','sel')}${fld('Provinsi / kota','','sel')}<div class="row">${btn('Lanjut','AU-03?step=Sekolah','p blk')}</div>`
+ :`<div class="h1">Informasi sekolah</div>${fld('Nama sekolah','⌕ cari sekolah','sel')}${fld('Kelas','','sel')}${fld('Jurusan','IPA / IPS / Bahasa / lainnya','sel')}${fld('Tahun ikut UTBK','','sel')}<div class="row">${btn('Kembali','AU-03?step=Data diri','g')}<span class="sp"></span>${btn('Lanjut','AU-04','p')}</div>`}`,false);}});
+def({id:'AU-04',group:'auth',name:'Pilih kampus & prodi tujuan',rel:'Des 2026',notes:['Jumlah prodi target per siswa: belum ditentukan (R-29, Pertanyaan terbuka #8).','Sistem menyimpan target dan mengambil estimasi skor target prodi.'],render(){return authWrap(`${steps(['Data diri','Sekolah','Target'],2)}<div class="h1">Kampus impianmu</div>
+ <div class="box dk col"><div class="row"><b>Pilihan 1</b><span class="sp"></span></div>${fld('Kampus','⌕ cari PTN','sel')}${fld('Program studi','⌕ cari prodi','sel')}<div class="sm">Estimasi skor target prodi tampil setelah dipilih</div></div>
+ <div class="box dash row"><span>+ Tambah pilihan</span><span class="sp"></span>${tbd('Jumlah pilihan: belum ditentukan')}</div>
+ <div class="row">${btn('Kembali','AU-03?step=Sekolah','g')}<span class="sp"></span>${btn('Selesai & ke dashboard','DB-01?state=Siswa baru','p')}</div>`,false);}});

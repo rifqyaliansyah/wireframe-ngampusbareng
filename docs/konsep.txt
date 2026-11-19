@@ -1,0 +1,525 @@
+Konsep Platform
+Gambaran besar website Ngampus Bareng: apa yang dibangun, target fitur
+Desember–Januari, arah pengembangan, dan alur inti.
+Bahan diskusi dengan vendor · November 2026
+
+GAM BARAN BESAR
+
+Platform persiapan UTBK menuju kampus impian
+Siswa tahu posisinya, tahu jaraknya ke kampus impian, dan tahu apa yang harus dilatih hari ini.
+
+Try Out
+
+Latihan
+
+Journey
+
+Paket
+
+Produk inti: simulasi persis
+UTBK untuk mengukur posisi
+siswa.
+
+Drilling per topik; nanti video
+dan modul.
+
+Dashboard progress, XP,
+streak, dan leaderboard.
+
+Try Out satuan dan
+berlangganan, dengan
+bundling.
+
+2027: Ngampus Bareng mulai berjualan retail, dengan Try Out sebagai produk utama.
+
+Ngampus Bareng · Konsep Platform
+
+02
+
+EMPAT LAPISAN PLATF ORM
+
+Struktur platform
+Sisi siswa
+
+Sisi admin
+
+Sisi pengajar
+
+Fondasi
+
+• Akun & kampus impian
+
+• Bank soal TO & drilling
+
+Nanti
+
+• Hak akses per paket &
+
+• Dashboard journey
+
+• Konten video & modul
+
+• Try Out & hasil
+
+• Penyusun Try Out
+
+• Tutor: kelas & rekaman
+
+• Video, modul, drilling
+
+• Paket, harga, bundling
+
+• Paket saya & referral
+
+• Voucher, referral, laporan
+
+• Mentor: pantau progres
+• Admin program: peserta &
+laporan
+
+program
+• Pembayaran online
+• Notifikasi WA & email
+• Analitik perilaku siswa
+• Keamanan data siswa
+
+Fitur dibangun sekali; paket dan program yang menentukan siapa boleh memakai apa.
+
+Ngampus Bareng · Konsep Platform
+
+03
+
+SISWA RETAIL DAN PESERTA TERDAFTAR
+
+Satu platform, banyak program
+Yang didapat
+
+Retail
+
+Program bimbel NB
+
+Program lembaga/sekolah
+
+TO, drilling, video, modul umum
+
+Ya
+
+Ya
+
+Ya
+
+TO & drilling khusus program
+
+Tidak
+
+Ya
+
+Ya
+
+Live learning (link & rekaman)
+
+Tidak
+
+Ya
+
+Opsional
+
+Tutor & mentor pendamping
+
+Tidak
+
+Ya
+
+Opsional
+
+Admin & laporan program
+
+Tidak
+
+Ya
+
+Ya
+
+Kuota dibiayai sponsor/beasiswa
+
+Tidak
+
+Tidak
+
+Opsional
+
+Platform → Program → Kelas/batch → Siswa. Menambah program baru cukup lewat konfigurasi, bukan pengembangan ulang.
+
+Ngampus Bareng · Konsep Platform
+
+04
+
+RILIS PERTAMA
+
+Target fitur Desember dan Januari
+DESEMBER 2026
+
+JANUARI 2027
+
+Try Out retail
+
+Paket berlangganan + belajar
+
+• Daftar & login (email, Google)
+
+• Paket berlangganan, pricing & bundling dari admin
+
+• Profil: sekolah, target kampus & prodi
+
+• Perpanjang dan upgrade paket
+
+• Beli TO satuan atau pakai voucher
+
+• Video learning + latihan pemahaman
+
+• Dua mode: latihan (santai) & persis UTBK
+
+• Modul digital
+
+• Skor IRT + prediksi skor instan, ranking
+
+• Drilling (aturan masih difinalkan)
+
+• Pembahasan & analisis per topik
+
+• Dashboard journey, XP, dan streak
+
+• Admin: bank soal, susun TO, laporan
+
+• Kode referral + potongan harga
+
+Ngampus Bareng · Konsep Platform
+
+05
+
+SETELAH RILIS PERTAMA
+
+Arah pengembangan berikutnya
+Berikutnya
+
+Menengah
+
+Jangka panjang
+
+• Leaderboard liga mingguan
+
+• Peran tutor & mentor di platform
+
+• Belajar yang dipersonalisasi berbasis
+
+• Badge & misi journey
+
+• Laporan untuk lembaga mitra
+
+• Program untuk lembaga & sekolah
+
+• Persiapan kampus luar negeri (PTLN)
+
+• Rekomendasi & tutor berbasis AI
+
+• Live learning terintegrasi + rekaman
+
+• Peta journey bergambar
+
+• Aplikasi mobile
+
+data
+
+Data jawaban siswa sejak rilis pertama adalah bahan baku personalisasi dan AI — wajib tersimpan rapi per soal dan per
+topik.
+
+Ngampus Bareng · Konsep Platform
+
+06
+
+DISEBUT SEKARANG, DIDETAILKAN SAAT PRD
+
+Daftar keinginan NB
+Fitur & isi
+
+Untuk siapa
+
+Kapan
+
+Halaman publik: landing, paket, FAQ
+
+Pengunjung
+
+Desember
+
+Dashboard siswa: riwayat & skor TO
+
+Siswa
+
+Desember
+
+Bantuan: kontak CS, lapor soal salah
+
+Siswa
+
+Desember
+
+Kartu hasil TO yang bisa dibagikan
+
+Siswa
+
+Januari
+
+Dashboard lengkap: journey, XP, streak, progres belajar
+
+Siswa
+
+Januari
+
+Notifikasi WA/email: pengingat & perpanjangan
+
+Siswa
+
+Januari
+
+Dashboard admin: penjualan, pengguna, paket
+
+Tim NB
+
+Januari
+
+Raport peserta (PDF)
+
+Siswa, admin program
+
+Nanti
+
+Dashboard & laporan per kelas
+
+Admin program
+
+Nanti
+
+Blog & konten SEO
+
+Pengunjung
+
+Nanti
+
+Akses orang tua
+
+Orang tua
+
+Belum diputuskan
+
+Ngampus Bareng · Konsep Platform
+
+07
+
+YANG DILIHAT SISWA VS YANG DI KERJAKAN SISTEM
+
+Flow 1 — Perjalanan siswa
+1
+
+2
+
+3
+
+4
+
+5
+
+Pilih kampus
+impian
+
+Pilih mode, ikut
+TO
+
+Lihat hasil
+
+Jarak ke tujuan
+
+Belajar & TO lagi
+
+Daftar, isi sekolah
+dan target prodi
+
+Mode latihan (santai)
+atau persis UTBK
+
+Prediksi skor
+langsung keluar, lalu
+pembahasan
+
+Tahu topik mana
+yang harus dikejar
+
+Video, modul,
+drilling, lalu TO
+berikutnya
+
+Prediksi skor IRT
+instan; skor final
+setelah TO ditutup
+
+Bandingkan skor vs
+target, pilih topik
+terlemah
+
+Rekomendasi materi,
+XP & streak, progress
+journey
+
+Di balik layar — yang dikerjakan sistem
+Simpan target, ambil
+estimasi skor target
+prodi
+
+Timer di server,
+autosave; mode
+UTBK catat pindah
+tab
+
+Langkah 2–5 berulang. Aturan drilling masih difinalkan, jadi modul drilling harus mudah diatur dari admin.
+
+Ngampus Bareng · Konsep Platform
+
+08
+
+DARI PENGUNJUNG MENJADI PELANGGAN
+
+Flow 2 — Beli paket & hak akses
+1
+
+2
+
+3
+
+4
+
+5
+
+Lihat paket
+
+Checkout
+
+Akses aktif
+
+Pakai
+
+Perpanjang
+
+TO satuan atau
+berlangganan;
+bandingkan isi
+bundling
+
+Bayar online; pakai
+voucher atau kode
+referral
+
+Otomatis: kuota TO,
+drilling, masa aktif
+
+Kuota berkurang tiap
+TO; sisa terlihat di
+dashboard
+
+Masa aktif habis →
+perpanjang atau
+upgrade
+
+Kenapa ini tidak sederhana
+
+Satu akun bisa punya beberapa paket aktif
+sekaligus
+
+Ngampus Bareng · Konsep Platform
+
+Harga, bundling, promo, dan potongan
+referral diubah dari admin
+
+Pembayaran gagal, refund, dan voucher harus
+tercatat rapi
+
+09
+
+SISI TI M NGAMPUS BARENG
+
+Flow 3 — Dari bank soal ke hasil siswa
+1 Unggah soal siap pakai
+
+2 Pilah per subtes
+
+3 Pilih bank tujuan
+
+Tim Akademik unggah soal lengkap: opsi,
+kunci, pembahasan, gambar/rumus
+
+Soal dibagi ke 7 subtes dan ditandai per topik
+
+Masuk bank Try Out atau bank drilling (aturan
+drilling masih difinalkan)
+
+4 Susun & terbitkan TO
+
+5 Skor IRT
+
+6 Laporan
+
+Pilih soal, atur mode, durasi, jadwal, dan
+paket yang berhak
+
+Prediksi skor instan saat submit; skor final
+dihitung ulang setelah TO ditutup
+
+Hasil, penjualan, topik terlemah, dan catatan
+integritas ujian
+
+Skala bank soal: ±1.000 paket × 160 soal — import massal dan pencarian soal wajib cepat.
+
+Ngampus Bareng · Konsep Platform
+
+10
+
+M o c k Up W e b s i t e
+
+Referensi Fitur dan Visual
+
+Ngampus Bareng · Konsep Platform
+
+10
+
+M o c k Up W e b s i t e
+
+Referensi Fitur dan Visual
+
+Ngampus Bareng · Konsep Platform
+
+10
+
+M o c k Up W e b s i t e
+
+Referensi Fitur dan Visual
+
+Ngampus Bareng · Konsep Platform
+
+10
+
+M o c k Up W e b s i t e
+
+Referensi Fitur dan Visual
+
+Ngampus Bareng · Konsep Platform
+
+10
+
+M o c k Up W e b s i t e
+
+Referensi Fitur dan Visual
+
+Ngampus Bareng · Konsep Platform
+
+10
+
+
