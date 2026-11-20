@@ -13,7 +13,7 @@ const DEFAULT_G={
   role:'reguler', strict:true,
   user:{name:'Raka Pratama',email:'raka@email.com',id:'NB-2027-0012'},
   targets:[], targetDraft:null, targetOpen:'',
-  users:null, reports:[], security:{screenshot:0,fullscreen:0},
+  users:null, reports:[], security:{fullscreen:0},
   formMode:'add', formReturn:'AM-07', editUser:null, lastSavedName:'', lastAction:'add'
 };
 const _stored=JSON.parse(localStorage.getItem(LS)||'{}');
@@ -128,7 +128,6 @@ document.addEventListener('click',e=>{
   const tg=t.closest('[data-target]'); if(tg){targetAction(tg.dataset.target);render();return;}
   const gs=t.closest('[data-gset]'); if(gs){const [k,val]=gs.dataset.gset.split('=');setG(k,val===undefined?!gv(k):(val==='1'||val==='on'||val==='true'));render();return;}
   const rp=t.closest('[data-report]'); if(rp){sendReport();render();return;}
-  const sec=t.closest('[data-sec]'); if(sec){if(sec.dataset.sec==='screenshot')setG('security.screenshot',(gv('security.screenshot')||0)+1);ST.V['TO-08.sec']=sec.dataset.sec;save();render();return;}
   const sv=t.closest('[data-set]'); if(sv){e.preventDefault();if(sv.dataset.saving)markSaving();sv.dataset.set.split('|').forEach(p=>{const [lhs,val]=p.split('=');const [id,...k]=lhs.split('.');setV(id,k.join('.'),val);});save();render();if(!sv.dataset.go)return;}
   const g=t.closest('[data-go]'); if(g&&g.closest('.frame')){e.preventDefault();nav(g.dataset.go);return;}
   const n=t.closest('[data-nav]'); if(n){ST.flow=null;nav(n.dataset.nav);return;}

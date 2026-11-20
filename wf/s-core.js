@@ -9,7 +9,7 @@ const FLOWS={
  f7:{n:7,t:'Peserta program → Dashboard program → Try Out program',role:'program',steps:['DB-01?state=Peserta program','PG-S1','TO-01?filter=Program','TO-02?jenis=Program','TO-05?jenis=Program']},
  f8:{n:8,t:'Siswa → Journey → Progres belajar → Rekomendasi belajar',steps:['DB-01?state=Sudah punya hasil','JR-01','JR-02','BL-01']},
  f9:{n:9,t:'Admin → Tambah peserta manual → daftar Seleksi Akademik → atur Mode Strict',steps:['AM-01','AM-02','AM-08','AM-07','AD-04?tahap=Pengaturan','TO-05?jenis=Reguler']},
- f10:{n:10,t:'Ujian aman → Fullscreen → Lapor soal → Screenshot terdeteksi',steps:['TO-05?jenis=Reguler&mode=Persis UTBK','TO-08?tipe=Pilihan Ganda Majemuk&fs=1','TO-08?report=1','K-05','TO-09']},
+ f10:{n:10,t:'Ujian aman → Fullscreen → Lapor soal',steps:['TO-05?jenis=Reguler&mode=Persis UTBK','TO-08?tipe=Pilihan Ganda Majemuk&fs=1','TO-08?report=1']},
 };
 const LEG=`<div class="row sm">${tag('Ya','k')} Prioritas wireframe PRD (detail penuh) ${tag('Nanti','d')} Masuk scope, struktur utama ${tag('Des 2026','g')} ${tag('Jan 2027','g')} ${tag('Berikutnya','g')} ${tag('Menengah','g')} ${tag('Jangka panjang','g')} Target rilis dari Konsep Platform ${tbd()} Keputusan belum dikunci</div>`;
 
