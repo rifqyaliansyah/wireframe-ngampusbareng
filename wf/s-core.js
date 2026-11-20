@@ -1,13 +1,15 @@
 /* Sitemap, flows, public website, auth */
 const FLOWS={
  f1:{n:1,t:'Pengunjung → Registrasi → Profil → Dashboard',steps:['PB-01','AU-02','AU-03?step=Data diri','AU-03?step=Sekolah','AU-04','DB-01?state=Siswa baru']},
- f2:{n:2,t:'Dashboard → Katalog → Detail → Persiapan → Ujian → Hasil',steps:['DB-01?state=Sudah punya hasil','TO-01?tab=Tersedia','TO-02?akses=Punya akses','TO-05?jenis=Reguler','TO-08?tipe=Pilihan ganda','TO-09','TO-10','TO-11','TO-12','TO-13']},
+ f2:{n:2,t:'Dashboard → Katalog → Detail → Persiapan → Ujian → Hasil',steps:['DB-01?state=Sudah punya hasil','TO-01?tab=Tersedia','TO-02?akses=Punya akses','TO-05?jenis=Reguler','TO-08?tipe=Pilihan ganda&fs=1','TO-09','TO-10','TO-11','TO-12','TO-13']},
  f3:{n:3,t:'Hasil → Pembahasan → Analisis → Drilling',steps:['TO-13','TO-16','TO-17?akses=Punya akses drilling','BL-02?view=Pengerjaan']},
  f4:{n:4,t:'Try Out terkunci → Paket → Checkout → Akses aktif',steps:['TO-02?akses=Terkunci','TO-03?alasan=Belum punya paket','PK-02','PK-03','PK-04?status=Menunggu pembayaran','PK-04?status=Berhasil','PK-01']},
  f5:{n:5,t:'Admin → Bank Soal → Import → Validasi → Draf',steps:['AM-01','AD-01','AD-02?tahap=1 Unggah','AD-02?tahap=2 Hasil validasi','AD-02?tahap=3 Tersimpan']},
  f6:{n:6,t:'Admin → Penyusun TO → Preview → Terbitkan',steps:['AD-04?tahap=Pengaturan','AD-04?tahap=Pilih soal','AD-04?tahap=Pratinjau','AD-04?tahap=Terbit']},
- f7:{n:7,t:'Peserta program → Dashboard program → Try Out program',steps:['DB-01?state=Peserta program','PG-S1','TO-01?filter=Program','TO-02?jenis=Program','TO-05?jenis=Program']},
+ f7:{n:7,t:'Peserta program → Dashboard program → Try Out program',role:'program',steps:['DB-01?state=Peserta program','PG-S1','TO-01?filter=Program','TO-02?jenis=Program','TO-05?jenis=Program']},
  f8:{n:8,t:'Siswa → Journey → Progres belajar → Rekomendasi belajar',steps:['DB-01?state=Sudah punya hasil','JR-01','JR-02','BL-01']},
+ f9:{n:9,t:'Admin → Tambah peserta manual → daftar Seleksi Akademik → atur Mode Strict',steps:['AM-01','AM-02','AM-08','AM-07','AD-04?tahap=Pengaturan','TO-05?jenis=Reguler']},
+ f10:{n:10,t:'Ujian aman → Fullscreen → Lapor soal → Screenshot terdeteksi',steps:['TO-05?jenis=Reguler&mode=Persis UTBK','TO-08?tipe=Pilihan Ganda Majemuk&fs=1','TO-08?report=1','K-05','TO-09']},
 };
 const LEG=`<div class="row sm">${tag('Ya','k')} Prioritas wireframe PRD (detail penuh) ${tag('Nanti','d')} Masuk scope, struktur utama ${tag('Des 2026','g')} ${tag('Jan 2027','g')} ${tag('Berikutnya','g')} ${tag('Menengah','g')} ${tag('Jangka panjang','g')} Target rilis dari Konsep Platform ${tbd()} Keputusan belum dikunci</div>`;
 
@@ -69,7 +71,4 @@ def({id:'AU-02',group:'auth',name:'Registrasi',rel:'Des 2026',render(){return au
 def({id:'AU-03',group:'auth',name:'Lengkapi profil & sekolah',rel:'Des 2026',variants:{step:{label:'Langkah',opts:['Data diri','Sekolah']}},render(){const s=v('step');return authWrap(`${steps(['Data diri','Sekolah','Target'],s=='Data diri'?0:1)}
  ${s=='Data diri'?`<div class="h1">Kenalan dulu</div>${fld('Nama panggilan','dipakai di ranking TO Akbar')}${fld('Tanggal lahir')}${fld('Jenis kelamin','','sel')}${fld('Provinsi / kota','','sel')}<div class="row">${btn('Lanjut','AU-03?step=Sekolah','p blk')}</div>`
  :`<div class="h1">Informasi sekolah</div>${fld('Nama sekolah','⌕ cari sekolah','sel')}${fld('Kelas','','sel')}${fld('Jurusan','IPA / IPS / Bahasa / lainnya','sel')}${fld('Tahun ikut UTBK','','sel')}<div class="row">${btn('Kembali','AU-03?step=Data diri','g')}<span class="sp"></span>${btn('Lanjut','AU-04','p')}</div>`}`,false);}});
-def({id:'AU-04',group:'auth',name:'Pilih kampus & prodi tujuan',rel:'Des 2026',notes:['Jumlah prodi target per siswa: belum ditentukan (R-29, Pertanyaan terbuka #8).','Sistem menyimpan target dan mengambil estimasi skor target prodi.'],render(){return authWrap(`${steps(['Data diri','Sekolah','Target'],2)}<div class="h1">Kampus impianmu</div>
- <div class="box dk col"><div class="row"><b>Pilihan 1</b><span class="sp"></span></div>${fld('Kampus','⌕ cari PTN','sel')}${fld('Program studi','⌕ cari prodi','sel')}<div class="sm">Estimasi skor target prodi tampil setelah dipilih</div></div>
- <div class="box dash row"><span>+ Tambah pilihan</span><span class="sp"></span>${tbd('Jumlah pilihan: belum ditentukan')}</div>
- <div class="row">${btn('Kembali','AU-03?step=Sekolah','g')}<span class="sp"></span>${btn('Selesai & ke dashboard','DB-01?state=Siswa baru','p')}</div>`,false);}});
+def({id:'AU-04',group:'auth',name:'Pilih kampus & prodi tujuan',rel:'Des 2026',notes:['Minimal 1 dan maksimal 4 pilihan prodi.','Aturan jenjang: 1–2 pilihan bebas; 3 pilihan maksimal 2 S-1/D-4 + minimal 1 D-3; 4 pilihan minimal 1 D-3.','Input memakai database contoh PTN & prodi; siap diganti API kampus/prodi.'],render(){return authWrap(`${steps(['Data diri','Sekolah','Target'],2)}${targetPickerHTML()}`,false);}});
