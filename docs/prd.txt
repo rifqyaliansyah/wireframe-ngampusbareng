@@ -15,7 +15,7 @@ Try Out NB dibangun sebagai satu mesin TO yang dibedakan lewat pengaturan akses,
 	Ranking hanya di TO Akbar
 	Disepakati
 	4
-	Skor IRT TO Reguler langsung keluar; TO Akbar keluar setelah periode ditutup
+	Skor TO mengikuti metode per TO; TO Akbar memakai IRT dan skornya keluar setelah periode ditutup
 	Disepakati
 	5
 	Skor yang sudah tampil tidak berubah saat bobot soal diperbarui
@@ -149,7 +149,7 @@ Semua jenis TO melewati alur pengerjaan yang sama; perbedaannya baru muncul sete
  alur Try Out siswa · Reguler dan Akbar 
 
 alur Try Out siswa · Reguler dan Akbar
-TO Reguler langsung memberi skor prediksi; TO Akbar menunggu periode ditutup lalu memberi skor final dan ranking. Kedua jalur berakhir di pembahasan, analisis topik, dan rekomendasi drilling.
+TO Reguler menampilkan skor sesuai metode yang dipilih; TO Akbar memakai IRT dan menunggu periode ditutup sebelum skor final dan ranking keluar. Kedua jalur berakhir di pembahasan, analisis topik, dan rekomendasi drilling.
 Alur admin: dari soal ke hasil
 1. Akademik mengisi template soal siap pakai (soal, opsi, kunci, pembahasan, gambar, rumus).
 2. Admin mengunggah template di AD-02; sistem memvalidasi dan menolak baris yang error.
@@ -228,7 +228,7 @@ Kode
 	TO-13
 	Hasil TO Reguler
 	Siswa
-	Skor prediksi IRT, prediksi lolos, jarak ke target
+	Skor sesuai metode TO, prediksi lolos jika data tersedia, jarak ke target
 	Ya
 	TO-14
 	Hasil TO Akbar
@@ -345,9 +345,10 @@ TO-12 Konfirmasi selesai ujian
 * Isi: rekap per subtes (terjawab, ragu, kosong); peringatan bahwa ujian tidak bisa diubah setelah dikirim.
 * Aksi: "Kirim jawaban" → TO-13 (Reguler) atau TO-14 (Akbar).
 * Kondisi: di subtes terakhir saat waktu habis, sistem mengirim otomatis tanpa layar ini.
-TO-13 Hasil TO Reguler
+TO-13 Hasil Try Out
 * Tujuan: siswa tahu posisinya dan langkah berikutnya.
-* Isi: skor prediksi IRT total dan per 7 subtes; jumlah benar per subtes; prediksi lolos per prodi target dalam kategori (mis. Aman / Berpeluang / Perlu kerja keras) dengan disclaimer; jarak ke target ("70 poin lagi"); perbandingan dengan TO sebelumnya.
+* Isi menyesuaikan metode: IRT menampilkan skor prediksi; +1/0/0 menampilkan jumlah benar dari total soal; +4/−1/0 menampilkan jumlah benar/salah/kosong dan total skor (yang dapat negatif).
+* Prediksi lolos dan perbandingan hanya memakai data historis dengan metode sama. Jika data belum tersedia, tampilkan "Prediksi belum tersedia untuk metode ini"; jangan fallback ke IRT.
 * Aksi: "Lihat pembahasan" → TO-16; "Analisis topik" → TO-17; "Ubah prodi target" → profil.
 * Kondisi: hasil mode latihan diberi label "Latihan" dan tidak masuk riwayat skor resmi.
 TO-14 Hasil TO Akbar
@@ -372,8 +373,9 @@ AD-03 Editor soal
 * Isi: pilihan tipe soal; teks soal dengan rumus dan gambar; opsi dan kunci (atau aturan jawaban isian); pembahasan; subtes, topik, subtopik, tingkat kesulitan awal; bank tujuan; status review; riwayat perubahan.
 * Aksi: simpan draf; kirim untuk review; setujui (peran reviewer Akademik); arsipkan.
 AD-04 Penyusun TO
-* Isi: jenis TO; siapa boleh akses; jadwal atau masa berlaku; mode; struktur subtes, durasi, urutan; ranking aktif atau tidak; kapan pembahasan dibuka; pilih soal per subtes (manual atau acak dari bank sesuai kriteria).
-* Aksi: "Pratinjau sebagai siswa"; "Terbitkan" (soal terkunci setelah TO dikerjakan siswa pertama).
+* Isi: jenis TO; metode skoring per TO (IRT, +1/0/0, +4/−1/0); siapa boleh akses; jadwal atau masa berlaku; mode; subtes yang dapat ditambah, diubah, diurutkan, dan dihapus beserta jumlah soal dan durasinya; ranking aktif atau tidak; kapan pembahasan dibuka; pilih soal per subtes (manual atau acak dari bank sesuai kriteria).
+* Aturan: TO Akbar wajib IRT karena ranking nasional; TO lain boleh memakai metode mana pun.
+* Aksi: "+ Buat Try Out Baru" membuka draf kosong tanpa template dan langsung meminta nama TO. Admin memilih jenis dan skoring, menambahkan subtes, lalu memilih soal, pratinjau, dan "Terbitkan" (soal terkunci setelah TO dikerjakan siswa pertama). TO terbit muncul di katalog.
 AD-05 Hasil dan laporan TO
 * Isi: jumlah peserta, sebaran skor, statistik per soal (% benar, soal yang paling banyak dikosongkan), catatan integritas (pindah tab), laporan soal dari siswa; untuk TO Akbar: tombol jalankan kalibrasi dan rilis skor.
 * Aksi: ekspor CSV; "Rilis skor" (Akbar); tandai soal bermasalah.
@@ -445,7 +447,7 @@ Kondisi khusus
 * Paket habis: banner di atas modul 1 dengan ajakan perpanjang → TO-03.
 * Peserta program: TO dan drilling khusus program tampil di modul 4 dan 7 dengan label programnya.
 Aturan dashboard
-* R-36 Dashboard hanya memakai skor TO resmi (mode persis UTBK dan TO Akbar); hasil mode latihan tidak memengaruhi modul 2, 3, dan 6.
+* R-36 Dashboard hanya memakai skor TO resmi; hasil mode latihan tidak memengaruhi modul 2, 3, dan 6. Tren dan posisi membandingkan metode yang sama saja.
 * R-37 Modul yang datanya belum ada disembunyikan atau diganti ajakan, tidak ditampilkan sebagai kartu kosong.
 * R-38 Modul 7–10 sudah disiapkan tempatnya di tata letak, tetapi baru dinyalakan sesuai jadwal rilis tanpa desain ulang.
 Aturan
@@ -465,12 +467,13 @@ B. Pelaksanaan dan mode
 * R-11 Tiga tipe soal didukung: pilihan ganda 5 opsi, pilihan majemuk kompleks (tabel), isian singkat. Aturan pencocokan isian (format angka, huruf besar-kecil, beberapa jawaban benar) diatur per soal.
 * R-12 Struktur subtes, jumlah soal, durasi, dan urutan diatur admin per TO; bawaan mengikuti pola UTBK 2026.
 C. Skor dan IRT
-* R-13 TO Reguler: skor prediksi IRT keluar langsung setelah submit, memakai bobot soal yang sudah dikalibrasi dari data sebelumnya.
-* R-14 TO Akbar: skor keluar setelah periode ditutup dan kalibrasi dari jawaban seluruh peserta event selesai; tanggal rilis tampil di layar.
+* R-13 Metode skoring dipilih per TO, tidak dikunci berdasarkan jenis TO. Pilihan: IRT, +1/0/0 (benar/salah/kosong), dan +4/−1/0 (benar/salah/kosong).
+* R-14 TO Akbar wajib IRT karena memiliki ranking; semua peserta dalam event harus memakai skala skor yang sebanding. Skor keluar setelah periode ditutup dan kalibrasi selesai.
 * R-15 Bobot soal TO Reguler diperbarui berkala saat data cukup; skor yang sudah tampil tidak berubah (usulan).
 * R-16 Soal baru tanpa data memakai bobot awal dari tingkat kesulitan yang ditetapkan Akademik.
-* R-17 Tidak ada skor minus; soal kosong bernilai 0.
+* R-17 Untuk IRT dan +1/0/0 tidak ada skor minus; soal kosong bernilai 0. Skor +1/0/0 ditampilkan sebagai jumlah benar dari total soal. Metode +4/−1/0 memberi +4 untuk benar, −1 untuk salah, dan 0 untuk kosong; skor boleh negatif.
 * R-18 Skor tampil per subtes dan total. Model, skala, dan cara konversi IRT ditetapkan RnD + Akademik bersama vendor [keputusan].
+* R-18a TO non-Akbar dapat memakai metode skoring mana pun, termasuk IRT. Skor dan riwayat hanya dibandingkan dengan TO bermetode sama.
 D. Hasil, pembahasan, analisis
 * R-19 Pembahasan TO Reguler terbuka setelah submit; TO Akbar setelah periode ditutup.
 * R-20 Pembahasan per soal berisi jawaban siswa, kunci, dan pembahasan teks dengan rumus dan gambar; slot video disiapkan.
@@ -485,6 +488,7 @@ F. Prediksi lolos
 * R-27 Selalu disebut "prediksi", ditampilkan dalam kategori (mis. Aman / Berpeluang / Perlu kerja keras), bukan persen; disclaimer wajib tampil.
 * R-28 Dasar perhitungan: skor siswa dibandingkan data skor target prodi dari data alumni NB dan data daya tampung serta peminat SNPMB; data dikelola Akademik [keputusan: sumber final].
 * R-29 Siswa memilih prodi target di profil [keputusan: jumlah pilihan].
+* R-29a Data historis dan prediksi dipisahkan per metode skoring. Jika data untuk metode tertentu belum tersedia, tampilkan "Prediksi belum tersedia untuk metode ini"; jangan menggunakan data IRT sebagai fallback.
 G. Integritas ujian
 * R-30 Mode UTBK dan TO Akbar mencatat setiap kali siswa keluar halaman atau layar penuh, memberi peringatan, dan [keputusan] submit otomatis setelah N kali; dicatat di laporan, bukan diskualifikasi otomatis.
 * R-31 Salin teks dan klik kanan diblokir di halaman ujian; urutan soal dan opsi diacak per siswa [keputusan].

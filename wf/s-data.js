@@ -57,6 +57,69 @@ const findProdi=(cid,pid)=>{const c=findCampus(cid);return c&&c.prodis.find(p=>p
 const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const sv=(id,k,d='')=>ST.V[id+'.'+k]!==undefined?ST.V[id+'.'+k]:d;
 
+/* ---------- try out configuration ---------- */
+const SCORING_METHODS=['IRT','+1/0/0','+4/−1/0'];
+const TO_EVENTS=[
+  {id:'regular',name:'Try Out Reguler #5',type:'Reguler',method:'IRT'},
+  {id:'akbar',name:'TO Akbar Januari',type:'Akbar',method:'IRT'},
+  {id:'pretest',name:'Pretest Diagnostik',type:'Reguler',method:'+1/0/0'},
+  {id:'um',name:'TO UM Kampus',type:'Reguler',method:'+4/−1/0'},
+  {id:'program',name:'TO Program Batch 2 · Minggu 3',type:'Program',method:'IRT'}
+];
+const toEvents=()=>[...TO_EVENTS,...(Array.isArray(ST.G.customToEvents)?ST.G.customToEvents:[])];
+const toEvent=id=>toEvents().find(e=>e.id===id)||TO_EVENTS[0];
+function createToEvent(){
+  const custom=ST.G.customToEvents=Array.isArray(ST.G.customToEvents)?ST.G.customToEvents:[];
+  const event={id:`draft-${Date.now().toString(36)}-${custom.length+1}`,name:'',type:'Reguler',method:'IRT',custom:true,published:false};
+  custom.push(event);
+  ST.G.toConfigs=ST.G.toConfigs||{};
+  ST.G.toConfigs[event.id]={scoring:'IRT',subtes:[]};
+  save();
+  return event;
+}
+function saveToEvent(id,updates){
+  const event=(ST.G.customToEvents||[]).find(e=>e.id===id);
+  if(!event)return false;
+  Object.assign(event,updates);
+  save();
+  return true;
+}
+function getToConfig(id){
+  const event=toEvent(id);
+  const saved=ST.G.toConfigs&&ST.G.toConfigs[event.id];
+  if(saved&&Array.isArray(saved.subtes))return {
+    scoring:event.type==='Akbar'?'IRT':saved.scoring||event.method,
+    subtes:saved.subtes
+  };
+  return {
+    scoring:event.method,
+    subtes:SUB.map(([code,name,questions,minutes])=>({code,name,questions,minutes:Number(String(minutes).replace(',','.'))}))
+  };
+}
+function saveToConfig(id,config){
+  ST.G.toConfigs=ST.G.toConfigs||{};
+  ST.G.toConfigs[id]=config;
+  save();
+}
+const scoringLabel=method=>method==='IRT'?'IRT':method;
+const toQuestionCount=config=>config.subtes.reduce((sum,s)=>sum+(Number(s.questions)||0),0);
+const toDuration=config=>config.subtes.reduce((sum,s)=>sum+(Number(s.minutes)||0),0);
+const scoreSummary=(method,total)=>method==='IRT'?'612':method==='+1/0/0'?`87 dari ${total}`:String(Math.min(10,total)*4-Math.min(100,Math.max(0,total-Math.min(10,total))));
+function scoreBreakdown(config,method){
+  const total=toQuestionCount(config);
+  let correctLeft=method==='+1/0/0'?Math.min(87,total):method==='+4/−1/0'?Math.min(10,total):null;
+  let wrongLeft=method==='+4/−1/0'?Math.min(100,total-(correctLeft||0)):null;
+  return config.subtes.map((sub,i)=>{
+    const questions=Number(sub.questions)||0;
+    const correct=correctLeft===null?Math.round(questions*.6):Math.min(questions,correctLeft);
+    if(correctLeft!==null)correctLeft-=correct;
+    const wrong=wrongLeft===null?0:Math.min(questions-correct,wrongLeft);
+    if(wrongLeft!==null)wrongLeft-=wrong;
+    const score=method==='IRT'?String(560+i*13):method==='+1/0/0'?String(correct):String(correct*4-wrong);
+    return {questions,correct,wrong,blank:questions-correct-wrong,score};
+  });
+}
+
 /* ---------- peserta manual ---------- */
 const SAMPLE_USERS=[
   {id:'NB-2027-0001',name:'Raka Pratama',email:'raka@email.com',phone:'0812-3456-7890',school:'SMA Negeri 1 Jakarta',category:'Reguler',source:'Registrasi mandiri',program:'—',package:'6 bln (+1)',target:'UI · Ilmu Komputer',to:'4',joined:'01 Des',status:'Aktif'},

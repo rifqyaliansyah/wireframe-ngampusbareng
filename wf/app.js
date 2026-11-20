@@ -85,7 +85,7 @@ const pageHead=(kick,title,right='')=>`<div class="row nw" style="align-items:fl
 /* ---------- render ---------- */
 const $=s=>document.querySelector(s);
 function stepRef(str){const [id,q]=str.split('?');const sets={};(q||'').split('&').filter(Boolean).forEach(p=>{const [k,val]=p.split('=');sets[k]=decodeURIComponent(val);});return {id,sets};}
-function nav(str){const {id,sets}=stepRef(str); if(!S[id]){console.warn('no screen',id);return;} for(const k in sets) setV(id,k,sets[k]); ST.cur=id;
+function nav(str){const {id,sets}=stepRef(str); if(!S[id]){console.warn('no screen',id);return;} if(id==='AD-04'&&!('tahap' in sets))setV(id,'tahap','Pengaturan'); if(id==='TO-02'&&!('event' in sets)){delete ST.V['TO-02.event'];if(!('jenis' in sets))setV(id,'jenis','Reguler');} if(id==='TO-05'&&!('event' in sets)){const jenis=sets.jenis||ST.V['TO-05.jenis']||'Reguler';setV(id,'event',jenis==='Akbar'?'akbar':jenis==='Program'?'program':'regular');} if(id==='TO-13'&&!('event' in sets))setV(id,'event','regular'); for(const k in sets) setV(id,k,sets[k]); ST.cur=id;
   if(ST.flow){const f=FLOWS[ST.flow]; const i=f.steps.findIndex(x=>stepRef(x).id==id && Object.entries(stepRef(x).sets).every(([k,val])=>ST.V[id+'.'+k]==val)); if(i>=0)ST.step=i;}
   save(); render(); $('.stage').scrollTop=0;}
 function render(){
@@ -121,9 +121,52 @@ function render(){
   fit();
 }
 function fit(){const f=$('#frames'),w=$('#fwrap'),st=$('.stage');f.style.transform='none';const nw=f.scrollWidth,nh=f.scrollHeight;const av=st.clientWidth-48;const sc=Math.min(1,av/nw);f.style.transform=`scale(${sc})`;w.style.width=nw*sc+'px';w.style.height=nh*sc+'px';}
+function toDraftError(event,config){
+  if(!event.name.trim())return 'Isi nama Try Out terlebih dahulu.';
+  if(!config.subtes.length)return 'Tambahkan minimal satu subtes sebelum lanjut.';
+  if(config.subtes.some(sub=>!String(sub.name||'').trim()||!Number.isInteger(Number(sub.questions))||Number(sub.questions)<1||!Number.isFinite(Number(sub.minutes))||Number(sub.minutes)<=0))return 'Lengkapi nama, jumlah soal, dan durasi setiap subtes.';
+  return '';
+}
 document.addEventListener('click',e=>{
   const t=e.target;
   const role=t.closest('[data-role]'); if(role){ST.G.role=role.dataset.role;normalizeRoleState();save();render();return;}
+  const toset=t.closest('[data-toset]'); if(toset){
+    const [action,a,b]=toset.dataset.toset.split(':');
+    const eventId=ST.V['AD-04.event']||'regular',event=toEvent(eventId),config=getToConfig(eventId);
+    if(action==='create'){
+      const created=createToEvent();
+      ST.V['AD-04.event']=created.id;ST.V['AD-04.tahap']='Pengaturan';ST.V['AD-04.error']='';
+      save();render();return;
+    }
+    if(action==='type'&&event.custom&&['Reguler','Akbar','Program'].includes(a)){
+      saveToEvent(eventId,{type:a});
+      if(a==='Akbar')config.scoring='IRT';
+      saveToConfig(eventId,config);ST.V['AD-04.error']='';render();return;
+    }
+    if(action==='publish'){
+      const error=event.custom?toDraftError(event,config):'';
+      if(error){ST.V['AD-04.error']=error;save();render();return;}
+      if(event.custom)saveToEvent(eventId,{published:true});
+      nav('AD-04?tahap=Terbit');return;
+    }
+    if(action==='next'){
+      const error=event.custom?toDraftError(event,config):'';
+      if(error){ST.V['AD-04.error']=error;save();render();return;}
+      nav('AD-04?tahap=Pilih soal');return;
+    }
+    if(action==='scoring'&&event.type!=='Akbar'&&SCORING_METHODS.includes(a))config.scoring=a;
+    else if(action==='add'){
+      let n=config.subtes.length+1,code='ST'+n;
+      while(config.subtes.some(sub=>sub.code===code)){n++;code='ST'+n;}
+      config.subtes.push({code,name:'Subtes baru',questions:1,minutes:1});
+    }else if(action==='remove'&&config.subtes.length>1)config.subtes.splice(Number(a),1);
+    else if(action==='move'){
+      const from=Number(a),to=from+Number(b);
+      if(from>=0&&from<config.subtes.length&&to>=0&&to<config.subtes.length)config.subtes.splice(to,0,config.subtes.splice(from,1)[0]);
+    }
+    ST.V['AD-04.error']='';
+    saveToConfig(eventId,config);render();return;
+  }
   const usr=t.closest('[data-user]'); if(usr){const [act,a,b]=usr.dataset.user.split(':');if(act==='save'){saveUserForm();render();}else openUserForm(act,a,b);return;}
   const tg=t.closest('[data-target]'); if(tg){targetAction(tg.dataset.target);render();return;}
   const gs=t.closest('[data-gset]'); if(gs){const [k,val]=gs.dataset.gset.split('=');setG(k,val===undefined?!gv(k):(val==='1'||val==='on'||val==='true'));render();return;}
@@ -146,6 +189,28 @@ document.addEventListener('input',e=>{
   const i=e.target.closest('[data-inp]'); if(i){const [id,...k]=i.dataset.inp.split('.');setV(id,k.join('.'),i.value);save();}
 });
 document.addEventListener('change',e=>{const i=e.target.closest('[data-inp]');if(!i)return;const [id,...k]=i.dataset.inp.split('.');setV(id,k.join('.'),i.value);markSaving();save();render();});
+document.addEventListener('change',e=>{
+  const eventInput=e.target.closest('[data-toevent-name]');
+  if(eventInput){
+    const name=eventInput.value.trim();
+    if(!name)ST.V['AD-04.error']='Nama Try Out wajib diisi.';
+    else{saveToEvent(eventInput.dataset.toeventName,{name});ST.V['AD-04.error']='';}
+    save();render();return;
+  }
+  const input=e.target.closest('[data-subinput]');if(!input)return;
+  const [field,indexText]=input.dataset.subinput.split(':'),eventId=ST.V['AD-04.event']||'regular',config=getToConfig(eventId),index=Number(indexText),value=input.value.trim();
+  let error='';
+  if(field==='name'&&!value)error='Nama subtes wajib diisi.';
+  else if(field==='questions'&&(!Number.isInteger(Number(value))||Number(value)<1))error='Jumlah soal harus berupa bilangan bulat minimal 1.';
+  else if(field==='minutes'&&(!Number.isFinite(Number(value))||Number(value)<=0))error='Durasi harus lebih besar dari 0 menit.';
+  if(error)ST.V['AD-04.error']=error;
+  else{
+    config.subtes[index][field]=field==='name'?value:Number(value);
+    ST.V['AD-04.error']='';
+    saveToConfig(eventId,config);
+  }
+  save();render();
+});
 document.addEventListener('keydown',e=>{if(e.target.tagName=='INPUT')return;const i=ORDER.indexOf(ST.cur);if(e.key=='ArrowDown'||e.key=='j'){ST.flow=null;nav(ORDER[Math.min(ORDER.length-1,i+1)]);}if(e.key=='ArrowUp'||e.key=='k'){ST.flow=null;nav(ORDER[Math.max(0,i-1)]);}});
 window.addEventListener('resize',fit);
 window.addEventListener('load',()=>{ $('#q').addEventListener('input',render); render(); });
